@@ -1,21 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Home from './views/Home';
+import Todos from './views/todos';
+import Add from './views/Add';
+import Details from './views/Details';
+import NotFound from './views/NotFound';
 
-interface AppProps {}
+interface AppProps { }
 
 const App = (props: AppProps) => {
-	const [data, setData] = useState('');
 
-	useEffect(() => {
-		fetch('http://localhost:3000/api/hello')
-			.then(res => res.json())
-			.then(data => setData(data.message))
-			.catch(e => console.log('[fetch erorr]', e));
-	}, []);
 
 	return (
-		<div className="mx-auto mt-5 w-25">
-			<div className="alert alert-info text-center">Hello {data}</div>
+		<BrowserRouter>
+		<div className="p-5">
+			<Link to='/'>Home</Link>
+			<Link to='/todos'>Todos</Link>
+			<Link to='/todos/new'>add</Link>
 		</div>
+			<Routes>
+				<Route path='/' element={<Home />} />
+				<Route path='/todos' element={<Todos />} />
+				<Route path='/todos/new' element={<Add />} />
+				<Route path='/todos/:id' element={<Details />} />
+				<Route path='*' element={<NotFound />} />
+			</Routes>
+		</BrowserRouter>
 	);
 };
 
